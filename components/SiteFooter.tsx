@@ -9,8 +9,6 @@ export function SiteFooter() {
           <div className="flex flex-col gap-2 font-tag text-sm">
             <Link href="/shop?gender=women">Women&apos;s</Link>
             <Link href="/shop?gender=men">Men&apos;s</Link>
-            <Link href="/shop?subcategory=sunglasses">Sunglasses</Link>
-            <Link href="/shop?subcategory=optical">Optical</Link>
           </div>
         </div>
         <div>
