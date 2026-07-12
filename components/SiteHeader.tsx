@@ -25,8 +25,7 @@ export function SiteHeader({
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 font-tag text-sm uppercase">
-          <Link href="/shop?category=shoes">Shoes</Link>
-          <Link href="/shop?category=eyewear">Eyewear</Link>
+          <Link href="/shop?category=shoes">Sneakers</Link>
           <Link href="/shop">Shop All</Link>
         </nav>
 
