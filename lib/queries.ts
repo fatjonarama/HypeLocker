@@ -1,6 +1,6 @@
-import { and, asc, desc, eq, gte, lte, sql as rawSql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, lte, sql as rawSql } from "drizzle-orm";
 import { getDb } from "@/db";
-import { products } from "@/db/schema";
+import { products, orders, orderItems } from "@/db/schema";
 import type { ProductDTO } from "@/lib/types";
 
 export type ShopFilters = {
@@ -97,4 +97,33 @@ export async function decrementStock(productId: number, qty: number) {
     .update(products)
     .set({ stock: rawSql`greatest(${products.stock} - ${qty}, 0)` })
     .where(eq(products.id, productId));
+}
+
+export async function getOrdersForUser(userId: number) {
+  const db = getDb();
+  const userOrders = await db
+    .select()
+    .from(orders)
+    .where(eq(orders.userId, userId))
+    .orderBy(desc(orders.createdAt));
+
+  const orderIds = userOrders.map((o) => o.id);
+  if (orderIds.length === 0) return [];
+
+  const items = await db
+    .select()
+    .from(orderItems)
+    .where(inArray(orderItems.orderId, orderIds));
+
+  const itemsByOrder = new Map<number, typeof items>();
+  for (const item of items) {
+    const list = itemsByOrder.get(item.orderId) ?? [];
+    list.push(item);
+    itemsByOrder.set(item.orderId, list);
+  }
+
+  return userOrders.map((order) => ({
+    ...order,
+    items: itemsByOrder.get(order.id) ?? [],
+  }));
 }

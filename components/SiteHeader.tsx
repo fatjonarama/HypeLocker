@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { GenderPills, type Gender } from "@/components/GenderPills";
 import { useCart } from "@/context/cart-context";
 
-export function SiteHeader() {
+export function SiteHeader({ user }: { user: { name: string } | null }) {
   const router = useRouter();
   const { count } = useCart();
 
@@ -28,6 +28,15 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-3">
           <GenderPills value="all" onChange={goToGender} className="hidden sm:flex" />
+          {user ? (
+            <Link href="/account" className="font-tag text-xs uppercase hidden sm:inline">
+              {user.name}
+            </Link>
+          ) : (
+            <Link href="/login" className="font-tag text-xs uppercase hidden sm:inline">
+              Login
+            </Link>
+          )}
           <Link
             href="/cart"
             className="relative flex h-10 w-10 items-center justify-center rounded-full border-2 border-hl-ink font-tag"

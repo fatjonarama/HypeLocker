@@ -1,4 +1,9 @@
-import { getAllOrdersWithItems, getAllProductsForAdmin } from "@/lib/admin-queries";
+import Link from "next/link";
+import {
+  getAllOrdersWithItems,
+  getAllProductsForAdmin,
+  getSalesSummary,
+} from "@/lib/admin-queries";
 import { AdminStockRow } from "@/components/AdminStockRow";
 import { AdminOrderStatus } from "@/components/AdminOrderStatus";
 import { formatPrice } from "@/lib/format";
@@ -6,14 +11,52 @@ import { formatPrice } from "@/lib/format";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const [orders, adminProducts] = await Promise.all([
+  const [orders, adminProducts, summary] = await Promise.all([
     getAllOrdersWithItems(),
     getAllProductsForAdmin(),
+    getSalesSummary(),
   ]);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <h1 className="font-display text-4xl uppercase mb-8">Admin</h1>
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="font-display text-4xl uppercase">Admin</h1>
+        <Link
+          href="/admin/products"
+          className="rounded-full border-2 border-black bg-hl-lime px-4 py-2 font-tag text-xs font-bold uppercase text-hl-bg"
+        >
+          Manage Products
+        </Link>
+      </div>
+
+      <section className="mb-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="rounded-2xl border-2 border-hl-ink/30 p-4">
+          <p className="font-tag text-xs uppercase text-hl-grey">Revenue (Paid)</p>
+          <p className="font-display text-2xl">{formatPrice(summary.totalRevenueCents)}</p>
+        </div>
+        <div className="rounded-2xl border-2 border-hl-ink/30 p-4">
+          <p className="font-tag text-xs uppercase text-hl-grey">Total Orders</p>
+          <p className="font-display text-2xl">{summary.totalOrders}</p>
+        </div>
+        <div className="rounded-2xl border-2 border-hl-ink/30 p-4">
+          <p className="font-tag text-xs uppercase text-hl-grey">Pending (COD)</p>
+          <p className="font-display text-2xl">{summary.pendingOrders}</p>
+        </div>
+        <div className="rounded-2xl border-2 border-hl-ink/30 p-4">
+          <p className="font-tag text-xs uppercase text-hl-grey mb-1">Best Sellers</p>
+          {summary.topProducts.length === 0 ? (
+            <p className="font-tag text-xs text-hl-grey">No sales yet</p>
+          ) : (
+            <ul className="font-tag text-xs">
+              {summary.topProducts.map((p) => (
+                <li key={p.productId}>
+                  {p.name} — {p.totalQuantity} sold
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
 
       <section className="mb-16">
         <h2 className="font-display text-2xl uppercase mb-4">Orders</h2>
@@ -28,7 +71,9 @@ export default async function AdminPage() {
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 font-tag text-sm">
                   <div>
-                    <p>{order.customerName}</p>
+                    <p>
+                      Order #{order.id} · {order.customerName}
+                    </p>
                     <p className="text-hl-grey">
                       {order.customerEmail} · {order.customerPhone}
                     </p>
@@ -59,7 +104,7 @@ export default async function AdminPage() {
       </section>
 
       <section>
-        <h2 className="font-display text-2xl uppercase mb-4">Stock</h2>
+        <h2 className="font-display text-2xl uppercase mb-4">Quick Stock Edit</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>

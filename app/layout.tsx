@@ -6,6 +6,7 @@ import { WishlistProvider } from "@/context/wishlist-context";
 import { Marquee } from "@/components/Marquee";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { getSessionUser } from "@/lib/auth";
 
 const anton = Anton({
   variable: "--font-display",
@@ -31,11 +32,13 @@ export const metadata: Metadata = {
     "HypeLocker: streetwear sneakers, boots, sunglasses & optical. Wear loud, move fast.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSessionUser();
+
   return (
     <html lang="en">
       <body
@@ -44,7 +47,7 @@ export default function RootLayout({
         <CartProvider>
           <WishlistProvider>
             <Marquee />
-            <SiteHeader />
+            <SiteHeader user={session ? { name: session.name } : null} />
             {children}
             <SiteFooter />
           </WishlistProvider>

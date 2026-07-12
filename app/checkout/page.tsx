@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useCart } from "@/context/cart-context";
@@ -13,6 +13,18 @@ export default function CheckoutPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.user) {
+          setName(data.user.name);
+          setEmail(data.user.email);
+        }
+      })
+      .catch(() => {});
+  }, []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -27,8 +27,17 @@ export const products = pgTable("products", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  email: varchar("email", { length: 256 }).notNull().unique(),
+  passwordHash: varchar("password_hash", { length: 256 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
   customerName: varchar("customer_name", { length: 256 }).notNull(),
   customerEmail: varchar("customer_email", { length: 256 }).notNull(),
   customerPhone: varchar("customer_phone", { length: 64 }).notNull(),
@@ -57,3 +66,4 @@ export type Product = typeof products.$inferSelect;
 export type NewProduct = typeof products.$inferInsert;
 export type Order = typeof orders.$inferSelect;
 export type OrderItem = typeof orderItems.$inferSelect;
+export type User = typeof users.$inferSelect;
