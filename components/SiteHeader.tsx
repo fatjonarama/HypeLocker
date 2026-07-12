@@ -24,10 +24,6 @@ export function SiteHeader({
           HypeLocker
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 font-tag text-sm uppercase">
-          <Link href="/shop?category=shoes">Sneakers</Link>
-        </nav>
-
         <div className="flex items-center gap-3">
           <GenderPills value="all" onChange={goToGender} className="hidden sm:flex" />
           {user ? (
