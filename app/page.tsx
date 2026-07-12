@@ -15,16 +15,6 @@ const TILES = [
     href: "/shop?gender=men",
     gradient: "from-hl-blue to-hl-bg",
   },
-  {
-    label: "Sunglasses",
-    href: "/shop?subcategory=sunglasses",
-    gradient: "from-hl-orange to-hl-bg",
-  },
-  {
-    label: "Optical",
-    href: "/shop?subcategory=optical",
-    gradient: "from-hl-lime to-hl-bg",
-  },
 ];
 
 export default async function HomePage() {
@@ -49,7 +39,7 @@ export default async function HomePage() {
             </span>
           </h1>
           <p className="mt-6 max-w-md font-tag text-sm text-hl-grey uppercase">
-            Shoes + eyewear. Streetwear style. New drops every week.
+            Shoes + sneakers. Streetwear style. New drops every week.
           </p>
           <Link
             href="/shop"
@@ -60,8 +50,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <section className="mx-auto max-w-2xl px-4 sm:px-6">
+        <div className="grid grid-cols-2 gap-4">
           {TILES.map((tile) => (
             <Link
               key={tile.label}
