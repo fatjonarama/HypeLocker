@@ -3,10 +3,9 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { GenderPills, type Gender } from "@/components/GenderPills";
 
-const CATEGORY_OPTIONS = [
-  { value: "shoes", label: "Shoes & Sneakers" },
-  { value: "eyewear", label: "Eyewear" },
-];
+const CATEGORY_OPTIONS = [{ value: "shoes", label: "Shoes & Sneakers" }];
+
+const EU_SIZES = Array.from({ length: 46 - 32 + 1 }, (_, i) => String(32 + i));
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -14,7 +13,7 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "Price: High to Low" },
 ];
 
-export function ShopFilters({ availableSizes }: { availableSizes: string[] }) {
+export function ShopFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -66,30 +65,28 @@ export function ShopFilters({ availableSizes }: { availableSizes: string[] }) {
         </div>
       </div>
 
-      {availableSizes.length > 0 && (
-        <div>
-          <h3 className="font-tag text-xs uppercase text-hl-grey mb-3">Size</h3>
-          <div className="flex flex-wrap gap-2">
-            {availableSizes.map((size) => {
-              const active = sizes.includes(size);
-              return (
-                <button
-                  key={size}
-                  type="button"
-                  onClick={() => toggleListValue("sizes", sizes, size)}
-                  className={`rounded-full border-2 px-3 py-1 font-tag text-xs uppercase ${
-                    active
-                      ? "border-black bg-hl-ink text-hl-bg"
-                      : "border-hl-ink text-hl-ink"
-                  }`}
-                >
-                  {size}
-                </button>
-              );
-            })}
-          </div>
+      <div>
+        <h3 className="font-tag text-xs uppercase text-hl-grey mb-3">Size (EU)</h3>
+        <div className="flex flex-wrap gap-2">
+          {EU_SIZES.map((size) => {
+            const active = sizes.includes(size);
+            return (
+              <button
+                key={size}
+                type="button"
+                onClick={() => toggleListValue("sizes", sizes, size)}
+                className={`rounded-full border-2 px-3 py-1 font-tag text-xs uppercase ${
+                  active
+                    ? "border-black bg-hl-ink text-hl-bg"
+                    : "border-hl-ink text-hl-ink"
+                }`}
+              >
+                {size}
+              </button>
+            );
+          })}
         </div>
-      )}
+      </div>
 
       <div>
         <h3 className="font-tag text-xs uppercase text-hl-grey mb-3">Price</h3>

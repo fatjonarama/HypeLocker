@@ -80,17 +80,6 @@ export async function getProductBySlug(
   return rows[0] ?? null;
 }
 
-export async function getAllSizesAvailable(): Promise<string[]> {
-  const db = getDb();
-  const rows = await db
-    .select({ sizes: products.sizes })
-    .from(products)
-    .where(eq(products.active, true));
-  const set = new Set<string>();
-  for (const r of rows) for (const s of r.sizes) set.add(s);
-  return Array.from(set).sort();
-}
-
 export async function decrementStock(productId: number, qty: number) {
   const db = getDb();
   await db

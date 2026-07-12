@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { ShopFilters } from "@/components/ShopFilters";
-import { getFilteredProducts, getAllSizesAvailable } from "@/lib/queries";
+import { getFilteredProducts } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 
@@ -22,18 +22,15 @@ export default async function ShopPage({
 }) {
   const sp = await searchParams;
 
-  const [products, availableSizes] = await Promise.all([
-    getFilteredProducts({
-      gender: (sp.gender as "women" | "men" | "all") ?? "all",
-      categories: sp.category?.split(",").filter(Boolean),
-      subcategory: sp.subcategory,
-      sizes: sp.sizes?.split(",").filter(Boolean),
-      minPrice: sp.minPrice ? parseFloat(sp.minPrice) : undefined,
-      maxPrice: sp.maxPrice ? parseFloat(sp.maxPrice) : undefined,
-      sort: (sp.sort as "newest" | "price-asc" | "price-desc") ?? "newest",
-    }),
-    getAllSizesAvailable(),
-  ]);
+  const products = await getFilteredProducts({
+    gender: (sp.gender as "women" | "men" | "all") ?? "all",
+    categories: sp.category?.split(",").filter(Boolean),
+    subcategory: sp.subcategory,
+    sizes: sp.sizes?.split(",").filter(Boolean),
+    minPrice: sp.minPrice ? parseFloat(sp.minPrice) : undefined,
+    maxPrice: sp.maxPrice ? parseFloat(sp.maxPrice) : undefined,
+    sort: (sp.sort as "newest" | "price-asc" | "price-desc") ?? "newest",
+  });
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -41,7 +38,7 @@ export default async function ShopPage({
       <div className="grid grid-cols-1 gap-8 md:grid-cols-[220px_1fr]">
         <aside>
           <Suspense fallback={null}>
-            <ShopFilters availableSizes={availableSizes} />
+            <ShopFilters />
           </Suspense>
         </aside>
         <section>
