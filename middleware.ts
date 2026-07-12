@@ -5,7 +5,8 @@ const COOKIE_NAME = "hl_admin_pw";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const isAdminApi = pathname.startsWith("/api/admin");
+  const isAdminApi =
+    pathname.startsWith("/api/admin") && pathname !== "/api/admin/login";
   const isAdminPage = pathname.startsWith("/admin") && pathname !== "/admin/login";
 
   if (!isAdminApi && !isAdminPage) return NextResponse.next();
