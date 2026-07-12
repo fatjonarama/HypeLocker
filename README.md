@@ -12,7 +12,8 @@ deployed on Vercel.
 - **Checkout:** Cash on delivery — customer submits name/email/phone/address at
   `/checkout`, order is saved as `pending`, admin marks it `paid` once cash is
   collected on delivery
-- **Admin:** password-gated `/admin` (env var + httpOnly cookie, no full auth system)
+- **Admin:** `/admin` is unlocked by the `isAdmin` flag on a regular customer
+  account — no separate password
 
 ## Local setup
 
@@ -49,6 +50,14 @@ deployed on Vercel.
 
 ## Admin
 
-Visit `/admin/login` and enter the value of `ADMIN_PASSWORD`. This sets an
-httpOnly cookie checked by `middleware.ts` — it's intentionally simple (no
-user accounts), matching the "no full auth system" requirement.
+There's no separate admin login. Register/log in as a normal customer at
+`/register` or `/login`, then promote that account in the database:
+
+```sql
+UPDATE users SET is_admin = true WHERE email = 'you@example.com';
+```
+
+`middleware.ts` checks the `isAdmin` claim on the signed session cookie for
+every `/admin` and `/api/admin` request. Once promoted, log out and back in
+so a fresh session token picks up the claim — an "Admin" button then appears
+in the header.

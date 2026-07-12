@@ -47,7 +47,13 @@ export default async function RootLayout({
         <CartProvider>
           <WishlistProvider>
             <Marquee />
-            <SiteHeader user={session ? { name: session.name } : null} />
+            <SiteHeader
+              user={
+                session
+                  ? { name: session.name, isAdmin: session.isAdmin }
+                  : null
+              }
+            />
             {children}
             <SiteFooter />
           </WishlistProvider>

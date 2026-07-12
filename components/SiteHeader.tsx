@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { GenderPills, type Gender } from "@/components/GenderPills";
 import { useCart } from "@/context/cart-context";
 
-export function SiteHeader({ user }: { user: { name: string } | null }) {
+export function SiteHeader({
+  user,
+}: {
+  user: { name: string; isAdmin: boolean } | null;
+}) {
   const router = useRouter();
   const { count } = useCart();
 
@@ -29,9 +33,19 @@ export function SiteHeader({ user }: { user: { name: string } | null }) {
         <div className="flex items-center gap-3">
           <GenderPills value="all" onChange={goToGender} className="hidden sm:flex" />
           {user ? (
-            <Link href="/account" className="font-tag text-xs uppercase hidden sm:inline">
-              {user.name}
-            </Link>
+            <>
+              {user.isAdmin && (
+                <Link
+                  href="/admin"
+                  className="rounded-full border-2 border-black bg-hl-lime px-3 py-1.5 font-tag text-xs font-bold uppercase text-hl-bg"
+                >
+                  Admin
+                </Link>
+              )}
+              <Link href="/account" className="font-tag text-xs uppercase hidden sm:inline">
+                {user.name}
+              </Link>
+            </>
           ) : (
             <Link href="/login" className="font-tag text-xs uppercase hidden sm:inline">
               Login

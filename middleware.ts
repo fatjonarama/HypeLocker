@@ -1,27 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
-const COOKIE_NAME = "hl_admin_pw";
-
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const isAdminApi =
-    pathname.startsWith("/api/admin") && pathname !== "/api/admin/login";
-  const isAdminPage = pathname.startsWith("/admin") && pathname !== "/admin/login";
+  const isAdminApi = pathname.startsWith("/api/admin");
+  const isAdminPage = pathname.startsWith("/admin");
 
   if (!isAdminApi && !isAdminPage) return NextResponse.next();
 
-  const cookie = req.cookies.get(COOKIE_NAME)?.value;
-  const valid =
-    !!cookie && !!process.env.ADMIN_PASSWORD && cookie === process.env.ADMIN_PASSWORD;
+  const token = req.cookies.get(SESSION_COOKIE)?.value;
+  const session = token ? await verifySessionToken(token) : null;
+  const isAdmin = !!session?.isAdmin;
 
-  if (valid) return NextResponse.next();
+  if (isAdmin) return NextResponse.next();
 
   if (isAdminApi) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const loginUrl = new URL("/admin/login", req.url);
+  const loginUrl = new URL("/login", req.url);
   return NextResponse.redirect(loginUrl);
 }
 

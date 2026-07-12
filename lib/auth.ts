@@ -13,6 +13,7 @@ export type SessionPayload = {
   userId: number;
   name: string;
   email: string;
+  isAdmin: boolean;
 };
 
 export async function createSessionToken(payload: SessionPayload) {

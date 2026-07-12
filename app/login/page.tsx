@@ -23,7 +23,7 @@ export default function LoginPage() {
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
-        router.push("/account");
+        router.push(data.isAdmin ? "/admin" : "/account");
         router.refresh();
         return;
       }
