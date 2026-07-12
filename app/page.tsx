@@ -50,7 +50,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-2xl px-4 sm:px-6">
+      <section className="mx-auto max-w-2xl px-4 pt-12 sm:px-6 sm:pt-20">
         <div className="grid grid-cols-2 gap-4">
           {TILES.map((tile) => (
             <Link
