@@ -10,18 +10,16 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotalCents } = useCart();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [country, setCountry] = useState("kosovo");
+  const [notes, setNotes] = useState("");
 
   useEffect(() => {
     fetch("/api/auth/me")
       .then((res) => res.json())
       .then((data) => {
-        if (data.user) {
-          setName(data.user.name);
-          setEmail(data.user.email);
-        }
+        if (data.user) setName(data.user.name);
       })
       .catch(() => {});
   }, []);
@@ -51,7 +49,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: { name, email, phone, address },
+          customer: { name, phone, address, country, notes },
           items: items.map((i) => ({
             productId: i.productId,
             size: i.size,
@@ -88,17 +86,7 @@ export default function CheckoutPage() {
             />
           </label>
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
-            Email
-            <input
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="rounded-md border-2 border-hl-ink bg-transparent px-3 py-2 font-body text-sm normal-case text-hl-ink"
-            />
-          </label>
-          <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
-            Phone
+            Phone Number
             <input
               required
               type="tel"
@@ -108,12 +96,33 @@ export default function CheckoutPage() {
             />
           </label>
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
-            Delivery Address
+            Country
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="rounded-md border-2 border-hl-ink bg-hl-bg px-3 py-2 font-body text-sm normal-case text-hl-ink"
+            >
+              <option value="kosovo">Kosovo</option>
+              <option value="albania">Albania</option>
+            </select>
+          </label>
+          <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
+            Home Address
             <textarea
               required
-              rows={4}
+              rows={3}
               value={address}
               onChange={(e) => setAddress(e.target.value)}
+              className="rounded-md border-2 border-hl-ink bg-transparent px-3 py-2 font-body text-sm normal-case text-hl-ink"
+            />
+          </label>
+          <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
+            Notes (optional)
+            <textarea
+              rows={3}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="e.g. leave with neighbor, call before delivery..."
               className="rounded-md border-2 border-hl-ink bg-transparent px-3 py-2 font-body text-sm normal-case text-hl-ink"
             />
           </label>

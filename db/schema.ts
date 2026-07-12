@@ -39,9 +39,11 @@ export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id),
   customerName: varchar("customer_name", { length: 256 }).notNull(),
-  customerEmail: varchar("customer_email", { length: 256 }).notNull(),
+  customerEmail: varchar("customer_email", { length: 256 }),
   customerPhone: varchar("customer_phone", { length: 64 }).notNull(),
   address: text("address").notNull(),
+  country: varchar("country", { length: 32 }).notNull(), // kosovo | albania
+  notes: text("notes"),
   status: varchar("status", { length: 32 }).notNull().default("pending"), // pending (awaiting delivery + cash) | paid (cash collected) | cancelled
   totalCents: integer("total_cents").notNull().default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),

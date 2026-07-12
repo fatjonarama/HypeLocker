@@ -9,9 +9,10 @@ import { getSessionUser } from "@/lib/auth";
 const bodySchema = z.object({
   customer: z.object({
     name: z.string().trim().min(1).max(256),
-    email: z.string().trim().email().max(256),
     phone: z.string().trim().min(1).max(64),
     address: z.string().trim().min(1).max(2000),
+    country: z.enum(["kosovo", "albania"]),
+    notes: z.string().trim().max(2000).optional(),
   }),
   items: z
     .array(
@@ -77,9 +78,11 @@ export async function POST(req: NextRequest) {
     .values({
       userId: session?.userId ?? null,
       customerName: parsed.data.customer.name,
-      customerEmail: parsed.data.customer.email,
+      customerEmail: session?.email ?? null,
       customerPhone: parsed.data.customer.phone,
       address: parsed.data.customer.address,
+      country: parsed.data.customer.country,
+      notes: parsed.data.customer.notes || null,
       status: "pending",
       totalCents,
     })

@@ -75,7 +75,8 @@ export default async function AdminPage() {
                       Order #{order.id} · {order.customerName}
                     </p>
                     <p className="text-hl-grey">
-                      {order.customerEmail} · {order.customerPhone}
+                      {order.customerPhone}
+                      {order.customerEmail ? ` · ${order.customerEmail}` : ""}
                     </p>
                   </div>
                   <AdminOrderStatus orderId={order.id} status={order.status} />
@@ -85,8 +86,13 @@ export default async function AdminPage() {
                   </span>
                 </div>
                 <p className="mt-2 whitespace-pre-line font-tag text-xs text-hl-grey">
-                  {order.address}
+                  {order.address} — {order.country}
                 </p>
+                {order.notes && (
+                  <p className="mt-1 font-tag text-xs text-hl-lime">
+                    Note: {order.notes}
+                  </p>
+                )}
                 <ul className="mt-2 space-y-1 font-tag text-xs text-hl-grey">
                   {order.items.map((item) => (
                     <li key={item.id}>
