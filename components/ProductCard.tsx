@@ -66,7 +66,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
         </span>
       </button>
 
-      <div className="relative aspect-[4/5] w-full bg-hl-grey/20">
+      <div className="relative aspect-[4/5] w-full bg-hl-grey/20 pointer-events-none">
         <Image
           src={image}
           alt={product.name}
