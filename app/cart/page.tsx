@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/cart-context";
@@ -8,38 +7,6 @@ import { formatPrice } from "@/lib/format";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, subtotalCents } = useCart();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleCheckout = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((i) => ({
-            productId: i.productId,
-            name: i.name,
-            image: i.image,
-            priceCents: i.priceCents,
-            size: i.size,
-            color: i.color,
-            quantity: i.quantity,
-          })),
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.url) {
-        throw new Error(data.error ?? "Failed to start checkout");
-      }
-      window.location.href = data.url;
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong");
-      setLoading(false);
-    }
-  };
 
   if (items.length === 0) {
     return (
@@ -117,17 +84,12 @@ export default function CartPage() {
         </span>
       </div>
 
-      {error && (
-        <p className="mt-4 font-tag text-sm text-hl-pink">{error}</p>
-      )}
-
-      <button
-        onClick={handleCheckout}
-        disabled={loading}
-        className="mt-6 w-full rounded-full border-2 border-black bg-hl-lime py-3 font-tag text-sm font-bold uppercase text-hl-bg disabled:opacity-60"
+      <Link
+        href="/checkout"
+        className="mt-6 block w-full rounded-full border-2 border-black bg-hl-lime py-3 text-center font-tag text-sm font-bold uppercase text-hl-bg"
       >
-        {loading ? "Redirecting…" : "Checkout"}
-      </button>
+        Checkout
+      </Link>
     </main>
   );
 }

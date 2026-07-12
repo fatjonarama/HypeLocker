@@ -11,12 +11,13 @@ CREATE TABLE "order_items" (
 --> statement-breakpoint
 CREATE TABLE "orders" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"stripe_session_id" varchar(256) NOT NULL,
-	"email" varchar(256),
+	"customer_name" varchar(256) NOT NULL,
+	"customer_email" varchar(256) NOT NULL,
+	"customer_phone" varchar(64) NOT NULL,
+	"address" text NOT NULL,
 	"status" varchar(32) DEFAULT 'pending' NOT NULL,
 	"total_cents" integer DEFAULT 0 NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "orders_stripe_session_id_unique" UNIQUE("stripe_session_id")
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "products" (

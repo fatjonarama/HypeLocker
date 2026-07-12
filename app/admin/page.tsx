@@ -1,5 +1,6 @@
 import { getAllOrdersWithItems, getAllProductsForAdmin } from "@/lib/admin-queries";
 import { AdminStockRow } from "@/components/AdminStockRow";
+import { AdminOrderStatus } from "@/components/AdminOrderStatus";
 import { formatPrice } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +27,21 @@ export default async function AdminPage() {
                 className="rounded-2xl border-2 border-hl-ink/30 p-4"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 font-tag text-sm">
-                  <span>{order.email ?? "No email"}</span>
-                  <span className="uppercase text-hl-lime">{order.status}</span>
+                  <div>
+                    <p>{order.customerName}</p>
+                    <p className="text-hl-grey">
+                      {order.customerEmail} · {order.customerPhone}
+                    </p>
+                  </div>
+                  <AdminOrderStatus orderId={order.id} status={order.status} />
                   <span>{formatPrice(order.totalCents)}</span>
                   <span className="text-hl-grey">
                     {new Date(order.createdAt).toLocaleString()}
                   </span>
                 </div>
+                <p className="mt-2 whitespace-pre-line font-tag text-xs text-hl-grey">
+                  {order.address}
+                </p>
                 <ul className="mt-2 space-y-1 font-tag text-xs text-hl-grey">
                   {order.items.map((item) => (
                     <li key={item.id}>

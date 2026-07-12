@@ -1,15 +1,17 @@
 # HypeLocker
 
 Streetwear shoes + eyewear shop. Next.js 15 (App Router, TypeScript, Tailwind v4),
-Drizzle ORM on Neon Postgres (serverless HTTP driver), Stripe Checkout, deployed
-on Vercel.
+Drizzle ORM on Neon Postgres (serverless HTTP driver), cash-on-delivery checkout,
+deployed on Vercel.
 
 ## Stack
 
 - **Framework:** Next.js 15, App Router, TypeScript
 - **Styling:** Tailwind CSS v4, Google Fonts (Anton, Space Grotesk, Space Mono)
 - **Database:** Neon Postgres via `@neondatabase/serverless` + Drizzle ORM
-- **Payments:** Stripe Checkout (redirect flow) + webhook
+- **Checkout:** Cash on delivery — customer submits name/email/phone/address at
+  `/checkout`, order is saved as `pending`, admin marks it `paid` once cash is
+  collected on delivery
 - **Admin:** password-gated `/admin` (env var + httpOnly cookie, no full auth system)
 
 ## Local setup
@@ -38,9 +40,9 @@ on Vercel.
 ## Project structure
 
 - `app/` — routes (homepage, `/shop`, `/product/[slug]`, `/cart`,
-  `/checkout/success`, `/checkout/cancel`, `/admin`, API routes)
+  `/checkout`, `/checkout/success`, `/admin`, API routes)
 - `db/` — Drizzle schema + client
-- `lib/` — queries, Stripe client, formatting helpers
+- `lib/` — queries, formatting helpers
 - `context/` — client-side cart & wishlist state (localStorage-backed)
 - `components/` — shared UI (header, footer, marquee, product card, filters)
 - `scripts/seed.ts` — CSV importer
