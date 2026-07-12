@@ -41,7 +41,7 @@ export default function CartPage() {
                   {item.name}
                 </h3>
                 <p className="font-tag text-xs text-hl-bg/60 uppercase">
-                  {[item.size, item.color].filter(Boolean).join(" / ")}
+                  {item.size}
                 </p>
               </div>
               <div className="flex items-center justify-between">

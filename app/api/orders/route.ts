@@ -20,7 +20,6 @@ const bodySchema = z.object({
         productId: z.number().int().positive(),
         quantity: z.number().int().positive().max(20),
         size: z.string().optional(),
-        color: z.string().optional(),
       })
     )
     .min(1),
@@ -43,7 +42,6 @@ export async function POST(req: NextRequest) {
     productId: number;
     name: string;
     size?: string;
-    color?: string;
     quantity: number;
     priceCents: number;
   }[] = [];
@@ -67,7 +65,6 @@ export async function POST(req: NextRequest) {
       productId: product.id,
       name: product.name,
       size: item.size,
-      color: item.color,
       quantity: item.quantity,
       priceCents: product.priceCents,
     });
@@ -94,7 +91,6 @@ export async function POST(req: NextRequest) {
       productId: item.productId,
       name: item.name,
       size: item.size || null,
-      color: item.color || null,
       quantity: item.quantity,
       priceCents: item.priceCents,
     });

@@ -53,7 +53,6 @@ export default function CheckoutPage() {
           items: items.map((i) => ({
             productId: i.productId,
             size: i.size,
-            color: i.color,
             quantity: i.quantity,
           })),
         }),

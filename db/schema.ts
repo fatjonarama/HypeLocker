@@ -19,7 +19,6 @@ export const products = pgTable("products", {
   compareAtCents: integer("compare_at_cents"),
   description: text("description").notNull().default(""),
   images: text("images").array().notNull().default([]),
-  colors: text("colors").array().notNull().default([]),
   sizes: text("sizes").array().notNull().default([]),
   stock: integer("stock").notNull().default(0),
   isNew: boolean("is_new").notNull().default(false),
@@ -60,7 +59,6 @@ export const orderItems = pgTable("order_items", {
     .references(() => products.id),
   name: varchar("name", { length: 256 }).notNull(),
   size: varchar("size", { length: 32 }),
-  color: varchar("color", { length: 32 }),
   quantity: integer("quantity").notNull().default(1),
   priceCents: integer("price_cents").notNull(),
 });

@@ -12,7 +12,6 @@ export function ProductDetail({ product }: { product: ProductDTO }) {
   const { addItem } = useCart();
   const [activeImage, setActiveImage] = useState(0);
   const [size, setSize] = useState<string | undefined>(product.sizes[0]);
-  const [color, setColor] = useState<string | undefined>(product.colors[0]);
   const [added, setAdded] = useState(false);
 
   const onSale =
@@ -29,7 +28,6 @@ export function ProductDetail({ product }: { product: ProductDTO }) {
       image: product.images[0] ?? "/placeholder.png",
       priceCents: product.priceCents,
       size,
-      color,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
@@ -102,27 +100,6 @@ export function ProductDetail({ product }: { product: ProductDTO }) {
                 >
                   {s}
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {product.colors.length > 0 && (
-          <div className="mt-6">
-            <h3 className="font-tag text-xs uppercase text-hl-grey mb-2">
-              Color
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {product.colors.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setColor(c)}
-                  style={{ backgroundColor: c }}
-                  className={`h-8 w-8 rounded-full border-2 ${
-                    color === c ? "border-hl-lime" : "border-black"
-                  }`}
-                  aria-label={c}
-                />
               ))}
             </div>
           </div>

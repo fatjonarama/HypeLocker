@@ -9,7 +9,6 @@ export type ProductDTO = {
   compareAtCents: number | null;
   description: string;
   images: string[];
-  colors: string[];
   sizes: string[];
   stock: number;
   isNew: boolean;

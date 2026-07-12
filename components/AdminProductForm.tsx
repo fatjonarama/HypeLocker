@@ -32,8 +32,6 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
     product?.compareAtCents ? (product.compareAtCents / 100).toString() : ""
   );
   const [description, setDescription] = useState(product?.description ?? "");
-  const [colors, setColors] = useState<string[]>(product?.colors ?? []);
-  const [colorInput, setColorInput] = useState("#101012");
   const [sizes, setSizes] = useState<string[]>(product?.sizes ?? []);
   const [sizeInput, setSizeInput] = useState("");
   const [stock, setStock] = useState(product?.stock ?? 0);
@@ -71,10 +69,6 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
     }
   };
 
-  const addColor = () => {
-    if (colorInput && !colors.includes(colorInput)) setColors([...colors, colorInput]);
-  };
-
   const addSize = () => {
     const s = sizeInput.trim();
     if (s && !sizes.includes(s)) setSizes([...sizes, s]);
@@ -96,7 +90,6 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
       compareAtCents: compareAtPrice ? Math.round(parseFloat(compareAtPrice) * 100) : null,
       description,
       images,
-      colors,
       sizes,
       stock,
       isNew,
@@ -243,45 +236,7 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
       </label>
 
       <div>
-        <h3 className="font-tag text-xs uppercase text-hl-grey mb-2">Colors</h3>
-        <div className="flex flex-wrap items-center gap-2">
-          {colors.map((c) => (
-            <span
-              key={c}
-              className="flex items-center gap-2 rounded-full border-2 border-hl-ink px-3 py-1 font-tag text-xs"
-            >
-              <span
-                className="h-4 w-4 rounded-full border border-hl-ink"
-                style={{ backgroundColor: c }}
-              />
-              {c}
-              <button
-                type="button"
-                onClick={() => setColors(colors.filter((x) => x !== c))}
-                className="text-hl-pink"
-              >
-                ×
-              </button>
-            </span>
-          ))}
-          <input
-            type="color"
-            value={colorInput}
-            onChange={(e) => setColorInput(e.target.value)}
-            className="h-8 w-8 rounded"
-          />
-          <button
-            type="button"
-            onClick={addColor}
-            className="rounded-full border-2 border-hl-ink px-3 py-1 font-tag text-xs uppercase"
-          >
-            + Add
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <h3 className="font-tag text-xs uppercase text-hl-grey mb-2">Sizes</h3>
+        <h3 className="font-tag text-xs uppercase text-hl-grey mb-2">Sizes (EU)</h3>
         <div className="flex flex-wrap items-center gap-2">
           {sizes.map((s) => (
             <span
@@ -307,7 +262,7 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
                 addSize();
               }
             }}
-            placeholder="e.g. 9 or ONE SIZE"
+            placeholder="e.g. 42 or ONE SIZE"
             className="w-32 rounded-md border-2 border-hl-ink bg-transparent px-2 py-1 font-body text-sm text-hl-ink"
           />
           <button

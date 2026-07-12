@@ -13,7 +13,6 @@ const bodySchema = z.object({
   compareAtCents: z.number().int().min(0).nullable().optional(),
   description: z.string().max(5000).optional(),
   images: z.array(z.string().url()).optional(),
-  colors: z.array(z.string()).optional(),
   sizes: z.array(z.string()).optional(),
   stock: z.number().int().min(0).optional(),
   isNew: z.boolean().optional(),

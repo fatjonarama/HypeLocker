@@ -15,7 +15,6 @@ type Row = {
   compareAtPrice?: string;
   description?: string;
   images?: string;
-  colors?: string;
   sizes?: string;
   stock?: string;
   isNew?: string;
@@ -105,7 +104,6 @@ async function main() {
         compareAtCents: dollarsToCents(row.compareAtPrice),
         description: row.description ?? "",
         images: splitList(row.images),
-        colors: splitList(row.colors),
         sizes: splitList(row.sizes),
         stock: row.stock ? parseInt(row.stock, 10) : 0,
         isNew: truthy(row.isNew),
@@ -122,7 +120,6 @@ async function main() {
           compareAtCents: sql`excluded.compare_at_cents`,
           description: sql`excluded.description`,
           images: sql`excluded.images`,
-          colors: sql`excluded.colors`,
           sizes: sql`excluded.sizes`,
           stock: sql`excluded.stock`,
           isNew: sql`excluded.is_new`,

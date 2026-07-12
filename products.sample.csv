@@ -1,7 +1,7 @@
-slug,name,category,subcategory,gender,price,compareAtPrice,description,images,colors,sizes,stock,isNew,active
-volt-runner-low,Volt Runner Low,shoes,sneakers,unisex,128.00,,Lightweight low-top runner with reflective trim.,https://picsum.photos/seed/volt-runner-low-1/800/1000|https://picsum.photos/seed/volt-runner-low-2/800/1000,#101012|#D8FF3E,7|8|9|10|11|12,24,true,true
-riot-boot,Riot Combat Boot,shoes,boots,women,159.00,189.00,Chunky lugged sole combat boot in matte leather.,https://picsum.photos/seed/riot-boot-1/800/1000,#101012|#8B8A87,6|7|8|9|10,12,false,true
-static-heel,Static Platform Heel,shoes,heels,women,149.00,,Platform heel with contrast stitching.,https://picsum.photos/seed/static-heel-1/800/1000,#FF2E92|#101012,6|7|8|9,10,true,true
-overdrive-hi,Overdrive Hi-Top,shoes,sneakers,men,139.00,,High-top sneaker with oversized tongue tag.,https://picsum.photos/seed/overdrive-hi-1/800/1000,#2FC6FF|#101012,8|9|10|11|12|13,18,false,true
-sonic-flash,Sonic Sunglasses,eyewear,sunglasses,unisex,89.00,,Wraparound shield sunglasses with mirrored lens.,https://picsum.photos/seed/sonic-flash-1/800/1000,#101012|#FF6A1F,ONE SIZE,30,true,true
-clear-signal,Clear Signal Optical,eyewear,optical,unisex,99.00,,"Acetate optical frame, blue-light lens ready.",https://picsum.photos/seed/clear-signal-1/800/1000,#101012|#8B8A87,ONE SIZE,20,false,true
+slug,name,category,subcategory,gender,price,compareAtPrice,description,images,sizes,stock,isNew,active
+volt-runner-low,Volt Runner Low,shoes,sneakers,unisex,128.00,,Lightweight low-top runner with reflective trim.,https://picsum.photos/seed/volt-runner-low-1/800/1000|https://picsum.photos/seed/volt-runner-low-2/800/1000,39|40|41|42|43|44,24,true,true
+riot-boot,Riot Combat Boot,shoes,boots,women,159.00,189.00,Chunky lugged sole combat boot in matte leather.,https://picsum.photos/seed/riot-boot-1/800/1000,36|37|38|39|40,12,false,true
+static-heel,Static Platform Heel,shoes,heels,women,149.00,,Platform heel with contrast stitching.,https://picsum.photos/seed/static-heel-1/800/1000,36|37|38|39,10,true,true
+overdrive-hi,Overdrive Hi-Top,shoes,sneakers,men,139.00,,High-top sneaker with oversized tongue tag.,https://picsum.photos/seed/overdrive-hi-1/800/1000,41|42|43|44|45|46,18,false,true
+sonic-flash,Sonic Sunglasses,eyewear,sunglasses,unisex,89.00,,Wraparound shield sunglasses with mirrored lens.,https://picsum.photos/seed/sonic-flash-1/800/1000,ONE SIZE,30,true,true
+clear-signal,Clear Signal Optical,eyewear,optical,unisex,99.00,,"Acetate optical frame, blue-light lens ready.",https://picsum.photos/seed/clear-signal-1/800/1000,ONE SIZE,20,false,true

@@ -10,14 +10,13 @@ import {
 } from "react";
 
 export type CartItem = {
-  key: string; // productId + size + color
+  key: string; // productId + size
   productId: number;
   slug: string;
   name: string;
   image: string;
   priceCents: number;
   size?: string;
-  color?: string;
   quantity: number;
 };
 
@@ -34,8 +33,8 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 const STORAGE_KEY = "hypelocker-cart";
 
-function makeKey(productId: number, size?: string, color?: string) {
-  return [productId, size ?? "", color ?? ""].join("::");
+function makeKey(productId: number, size?: string) {
+  return [productId, size ?? ""].join("::");
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -58,7 +57,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, hydrated]);
 
   const addItem: CartContextValue["addItem"] = (item, quantity = 1) => {
-    const key = makeKey(item.productId, item.size, item.color);
+    const key = makeKey(item.productId, item.size);
     setItems((prev) => {
       const existing = prev.find((i) => i.key === key);
       if (existing) {

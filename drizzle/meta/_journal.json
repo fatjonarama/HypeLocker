@@ -29,6 +29,13 @@
       "when": 1783883329503,
       "tag": "0003_mushy_deathbird",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783884858759,
+      "tag": "0004_white_stellaris",
+      "breakpoints": true
     }
   ]
 }

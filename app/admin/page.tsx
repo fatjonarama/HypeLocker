@@ -97,8 +97,7 @@ export default async function AdminPage() {
                   {order.items.map((item) => (
                     <li key={item.id}>
                       {item.quantity}× {item.name}
-                      {item.size ? ` (${item.size})` : ""}
-                      {item.color ? ` [${item.color}]` : ""} —{" "}
+                      {item.size ? ` (${item.size})` : ""} —{" "}
                       {formatPrice(item.priceCents * item.quantity)}
                     </li>
                   ))}

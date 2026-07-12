@@ -26,7 +26,6 @@ export function ProductCard({ product }: { product: ProductDTO }) {
       image,
       priceCents: product.priceCents,
       size: product.sizes[0],
-      color: product.colors[0],
     });
   };
 
