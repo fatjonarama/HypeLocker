@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/format";
+import { isVideoUrl } from "@/lib/media";
 import type { ProductDTO } from "@/lib/types";
 
 export function ProductDetail({ product }: { product: ProductDTO }) {
@@ -37,14 +38,26 @@ export function ProductDetail({ product }: { product: ProductDTO }) {
     <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-10 sm:px-6 md:grid-cols-2">
       <div>
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border-[3px] border-black bg-hl-grey/20">
-          <Image
-            src={product.images[activeImage] ?? "/placeholder.png"}
-            alt={product.name}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-          />
+          {isVideoUrl(product.images[activeImage] ?? "") ? (
+            <video
+              src={product.images[activeImage]}
+              className="h-full w-full object-cover"
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <Image
+              src={product.images[activeImage] ?? "/placeholder.png"}
+              alt={product.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+          )}
         </div>
         {product.images.length > 1 && (
           <div className="mt-3 flex gap-2">
@@ -56,7 +69,11 @@ export function ProductDetail({ product }: { product: ProductDTO }) {
                   i === activeImage ? "border-hl-lime" : "border-hl-ink/30"
                 }`}
               >
-                <Image src={img} alt="" fill className="object-cover" />
+                {isVideoUrl(img) ? (
+                  <video src={img} className="h-full w-full object-cover" muted loop playsInline />
+                ) : (
+                  <Image src={img} alt="" fill className="object-cover" />
+                )}
               </button>
             ))}
           </div>

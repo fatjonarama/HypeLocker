@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useWishlist } from "@/context/wishlist-context";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/format";
+import { isVideoUrl } from "@/lib/media";
 import type { ProductDTO } from "@/lib/types";
 
 export function ProductCard({ product }: { product: ProductDTO }) {
@@ -16,7 +17,7 @@ export function ProductCard({ product }: { product: ProductDTO }) {
     product.compareAtCents > product.priceCents;
 
   const wishlisted = isWishlisted(product.id);
-  const image = product.images[0] ?? "/placeholder.png";
+  const image = product.images.find((img) => !isVideoUrl(img)) ?? "/placeholder.png";
 
   const quickAdd = () => {
     addItem({

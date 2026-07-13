@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gte, inArray, lte, sql as rawSql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, inArray, lte, or, sql as rawSql } from "drizzle-orm";
 import { getDb } from "@/db";
 import { products, orders, orderItems } from "@/db/schema";
 import type { ProductDTO } from "@/lib/types";
@@ -31,7 +31,9 @@ export async function getFilteredProducts(
   const conditions = [eq(products.active, true)];
 
   if (filters.gender && filters.gender !== "all") {
-    conditions.push(eq(products.gender, filters.gender));
+    conditions.push(
+      or(eq(products.gender, filters.gender), eq(products.gender, "unisex"))!
+    );
   }
   if (filters.minPrice !== undefined) {
     conditions.push(gte(products.priceCents, Math.round(filters.minPrice * 100)));

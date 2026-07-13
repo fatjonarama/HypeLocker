@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { upload } from "@vercel/blob/client";
+import { isVideoUrl } from "@/lib/media";
 import type { ProductDTO } from "@/lib/types";
 
 const CATEGORIES = ["shoes", "eyewear"] as const;
@@ -54,12 +56,11 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
     try {
       const uploaded: string[] = [];
       for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error ?? "Upload failed");
-        uploaded.push(data.url);
+        const blob = await upload(`products/${Date.now()}-${file.name}`, file, {
+          access: "public",
+          handleUploadUrl: "/api/admin/upload",
+        });
+        uploaded.push(blob.url);
       }
       setImages((prev) => [...prev, ...uploaded]);
     } catch (err) {
@@ -276,11 +277,15 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
       </div>
 
       <div>
-        <h3 className="font-tag text-xs uppercase text-hl-grey mb-2">Photos</h3>
+        <h3 className="font-tag text-xs uppercase text-hl-grey mb-2">Photos &amp; Videos</h3>
         <div className="flex flex-wrap gap-3 mb-3">
           {images.map((img) => (
             <div key={img} className="relative h-20 w-20 overflow-hidden rounded-lg border-2 border-hl-ink">
-              <Image src={img} alt="" fill className="object-cover" />
+              {isVideoUrl(img) ? (
+                <video src={img} className="h-full w-full object-cover" muted loop playsInline />
+              ) : (
+                <Image src={img} alt="" fill className="object-cover" />
+              )}
               <button
                 type="button"
                 onClick={() => setImages(images.filter((x) => x !== img))}
@@ -293,7 +298,7 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
         </div>
         <input
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
           onChange={(e) => onFilesSelected(e.target.files)}
           disabled={uploading}
