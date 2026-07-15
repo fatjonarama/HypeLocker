@@ -41,6 +41,9 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
   const [active, setActive] = useState(product?.active ?? true);
   const [images, setImages] = useState<string[]>(product?.images ?? []);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{ done: number; total: number } | null>(
+    null
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,22 +54,36 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
 
   const onFilesSelected = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
+    const fileList = Array.from(files);
     setUploading(true);
+    setUploadProgress({ done: 0, total: fileList.length });
     setError(null);
     try {
-      const uploaded: string[] = [];
-      for (const file of Array.from(files)) {
-        const blob = await upload(`products/${Date.now()}-${file.name}`, file, {
-          access: "public",
-          handleUploadUrl: "/api/admin/upload",
-        });
-        uploaded.push(blob.url);
-      }
+      const results = await Promise.allSettled(
+        fileList.map(async (file) => {
+          const blob = await upload(`products/${Date.now()}-${file.name}`, file, {
+            access: "public",
+            handleUploadUrl: "/api/admin/upload",
+          });
+          setUploadProgress((prev) =>
+            prev ? { done: prev.done + 1, total: prev.total } : prev
+          );
+          return blob.url;
+        })
+      );
+
+      const uploaded = results
+        .filter((r): r is PromiseFulfilledResult<string> => r.status === "fulfilled")
+        .map((r) => r.value);
+      const failedCount = results.length - uploaded.length;
+
       setImages((prev) => [...prev, ...uploaded]);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+      if (failedCount > 0) {
+        setError(`${failedCount} file(s) failed to upload — try again`);
+      }
     } finally {
       setUploading(false);
+      setUploadProgress(null);
     }
   };
 
@@ -303,7 +320,12 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
           onChange={(e) => onFilesSelected(e.target.files)}
           disabled={uploading}
         />
-        {uploading && <p className="mt-1 font-tag text-xs text-hl-grey">Uploading…</p>}
+        {uploading && (
+          <p className="mt-1 font-tag text-xs text-hl-grey">
+            Uploading{" "}
+            {uploadProgress ? `${uploadProgress.done}/${uploadProgress.total}` : "…"}
+          </p>
+        )}
       </div>
 
       <div className="flex gap-6 font-tag text-sm uppercase">
