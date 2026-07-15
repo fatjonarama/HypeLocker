@@ -5,7 +5,11 @@ import { GenderPills, type Gender } from "@/components/GenderPills";
 
 const CATEGORY_OPTIONS = [{ value: "shoes", label: "Shoes & Sneakers" }];
 
-const EU_SIZES = Array.from({ length: 46 - 32 + 1 }, (_, i) => String(32 + i));
+const WOMEN_SIZES = ["36", "37", "38", "39", "40"];
+const MEN_SIZES = ["40", "41", "42", "43", "45"];
+const ALL_SIZES = Array.from(new Set([...WOMEN_SIZES, ...MEN_SIZES])).sort(
+  (a, b) => Number(a) - Number(b)
+);
 
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
@@ -68,7 +72,7 @@ export function ShopFilters() {
       <div>
         <h3 className="font-tag text-xs uppercase text-hl-grey mb-3">Size (EU)</h3>
         <div className="flex flex-wrap gap-2">
-          {EU_SIZES.map((size) => {
+          {(gender === "women" ? WOMEN_SIZES : gender === "men" ? MEN_SIZES : ALL_SIZES).map((size) => {
             const active = sizes.includes(size);
             return (
               <button
