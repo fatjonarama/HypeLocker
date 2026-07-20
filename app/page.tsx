@@ -13,7 +13,7 @@ const TILES = [
       "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20femqit.jpg-jnfLQgeMzaHbJmel1XOvFWdq7CjSZY.jpeg",
     glow: "shadow-[0_0_45px_12px_rgba(255,46,146,0.55)]",
     imagePosition: "center top",
-    zoom: 1.55,
+    zoom: 1.7,
   },
   {
     label: "Men's",
@@ -75,6 +75,7 @@ export default async function HomePage() {
                 style={
                   {
                     objectPosition: tile.imagePosition,
+                    transformOrigin: "center bottom",
                     "--zoom": tile.zoom,
                   } as React.CSSProperties
                 }
