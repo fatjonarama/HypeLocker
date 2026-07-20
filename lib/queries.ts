@@ -8,8 +8,8 @@ export type ShopFilters = {
   categories?: string[]; // shoes | eyewear
   subcategory?: string; // sneakers | boots | heels | sunglasses | optical
   sizes?: string[];
-  minPrice?: number; // dollars
-  maxPrice?: number; // dollars
+  minPrice?: number; // euros
+  maxPrice?: number; // euros
   sort?: "newest" | "price-asc" | "price-desc";
 };
 

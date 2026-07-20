@@ -207,7 +207,7 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
 
       <div className="grid grid-cols-3 gap-4">
         <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
-          Price ($)
+          Price (€)
           <input
             required
             type="number"
@@ -219,7 +219,7 @@ export function AdminProductForm({ product }: { product?: ProductDTO }) {
           />
         </label>
         <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
-          Compare-at ($)
+          Compare-at (€)
           <input
             type="number"
             step="0.01"
