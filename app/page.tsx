@@ -12,8 +12,8 @@ const TILES = [
     image:
       "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20femqit.jpg-jnfLQgeMzaHbJmel1XOvFWdq7CjSZY.jpeg",
     glow: "shadow-[0_0_45px_12px_rgba(255,46,146,0.55)]",
-    imagePosition: "center 15%",
-    zoom: 1.35,
+    imagePosition: "center top",
+    zoom: 1.55,
   },
   {
     label: "Men's",
