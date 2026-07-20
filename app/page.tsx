@@ -12,6 +12,8 @@ const TILES = [
     image:
       "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20femqit.jpg-jnfLQgeMzaHbJmel1XOvFWdq7CjSZY.jpeg",
     glow: "shadow-[0_0_45px_12px_rgba(255,46,146,0.55)]",
+    imagePosition: "center 15%",
+    zoom: 1.35,
   },
   {
     label: "Men's",
@@ -19,6 +21,8 @@ const TILES = [
     image:
       "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20meshqit-eDMOgEMZ25QmzMaqXtgM843ft67iHJ.png",
     glow: "shadow-[0_0_45px_12px_rgba(47,198,255,0.55)]",
+    imagePosition: "center top",
+    zoom: 1,
   },
 ];
 
@@ -67,7 +71,13 @@ export default async function HomePage() {
                 src={tile.image}
                 alt={tile.label}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="scale-[var(--zoom)] object-cover transition-transform duration-300 group-hover:scale-[calc(var(--zoom)*1.05)]"
+                style={
+                  {
+                    objectPosition: tile.imagePosition,
+                    "--zoom": tile.zoom,
+                  } as React.CSSProperties
+                }
                 sizes="(max-width: 640px) 50vw, 320px"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent" />
