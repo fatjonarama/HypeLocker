@@ -10,10 +10,10 @@ const TILES = [
     label: "Women's",
     href: "/shop?gender=women",
     image:
-      "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20femqit.jpg-jnfLQgeMzaHbJmel1XOvFWdq7CjSZY.jpeg",
+      "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784566490294-foto%20te%20femqit%202-at9foNQsxtFjzRaiYGm3fr6jonMbNY.png",
     glow: "shadow-[0_0_45px_12px_rgba(255,46,146,0.55)]",
     imagePosition: "center top",
-    zoom: 1.7,
+    zoom: 1,
   },
   {
     label: "Men's",
