@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/ProductCard";
 import { getNewInProducts } from "@/lib/queries";
@@ -8,12 +9,16 @@ const TILES = [
   {
     label: "Women's",
     href: "/shop?gender=women",
-    gradient: "from-hl-pink to-hl-bg",
+    image:
+      "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20femqit.jpg-jnfLQgeMzaHbJmel1XOvFWdq7CjSZY.jpeg",
+    glow: "shadow-[0_0_45px_12px_rgba(255,46,146,0.55)]",
   },
   {
     label: "Men's",
     href: "/shop?gender=men",
-    gradient: "from-hl-blue to-hl-bg",
+    image:
+      "https://ooqdzaquu1eaok9r.public.blob.vercel-storage.com/products/1784548530833-foto%20te%20meshqit-eDMOgEMZ25QmzMaqXtgM843ft67iHJ.png",
+    glow: "shadow-[0_0_45px_12px_rgba(47,198,255,0.55)]",
   },
 ];
 
@@ -51,14 +56,22 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto max-w-2xl px-4 pt-12 sm:px-6 sm:pt-20">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-8">
           {TILES.map((tile) => (
             <Link
               key={tile.label}
               href={tile.href}
-              className={`relative flex aspect-square items-end rounded-2xl border-[3px] border-black bg-gradient-to-br ${tile.gradient} p-4`}
+              className={`group relative flex aspect-square items-end overflow-hidden rounded-2xl border-[3px] border-black transition-shadow ${tile.glow}`}
             >
-              <span className="font-display text-xl uppercase text-hl-ink sm:text-2xl">
+              <Image
+                src={tile.image}
+                alt={tile.label}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 50vw, 320px"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent" />
+              <span className="relative z-10 p-4 font-display text-xl uppercase text-hl-ink sm:text-2xl">
                 {tile.label}
               </span>
             </Link>
