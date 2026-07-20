@@ -14,6 +14,7 @@ export default function CheckoutPage() {
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("kosovo");
   const [notes, setNotes] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot, left empty by real users
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -49,7 +50,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: { name, phone, address, country, notes },
+          customer: { name, phone, address, country, notes, website },
           items: items.map((i) => ({
             productId: i.productId,
             size: i.size,
@@ -75,6 +76,16 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute -left-[9999px] h-0 w-0 opacity-0"
+          />
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
             Full Name
             <input

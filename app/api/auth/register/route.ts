@@ -5,20 +5,35 @@ import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { users } from "@/db/schema";
 import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const bodySchema = z.object({
   name: z.string().trim().min(1).max(256),
   email: z.string().trim().email().max(256),
   password: z.string().min(8).max(256),
+  website: z.string().max(0).optional(), // honeypot: real users leave this empty
 });
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const limit = rateLimit(`register:${ip}`, 5, 15 * 60 * 1000);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } }
+    );
+  }
+
   const parsed = bodySchema.safeParse(await req.json());
   if (!parsed.success) {
     return NextResponse.json(
       { error: "Please provide a valid name, email, and a password of at least 8 characters" },
       { status: 400 }
     );
+  }
+  if (parsed.data.website) {
+    // Honeypot tripped — pretend it's a normal validation error.
+    return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
   }
 
   const db = getDb();

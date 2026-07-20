@@ -5,6 +5,7 @@ import { getDb } from "@/db";
 import { products, orders, orderItems } from "@/db/schema";
 import { decrementStock } from "@/lib/queries";
 import { getSessionUser } from "@/lib/auth";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const bodySchema = z.object({
   customer: z.object({
@@ -13,6 +14,7 @@ const bodySchema = z.object({
     address: z.string().trim().min(1).max(2000),
     country: z.enum(["kosovo", "albania"]),
     notes: z.string().trim().max(2000).optional(),
+    website: z.string().max(0).optional(), // honeypot: real users leave this empty
   }),
   items: z
     .array(
@@ -26,8 +28,20 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const limit = rateLimit(`order:${ip}`, 8, 10 * 60 * 1000);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Too many orders placed. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } }
+    );
+  }
+
   const parsed = bodySchema.safeParse(await req.json());
   if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid order payload" }, { status: 400 });
+  }
+  if (parsed.data.customer.website) {
     return NextResponse.json({ error: "Invalid order payload" }, { status: 400 });
   }
 

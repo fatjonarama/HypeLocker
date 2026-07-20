@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { getDb } from "@/db";
 import { users } from "@/db/schema";
 import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
 const bodySchema = z.object({
   email: z.string().trim().email().max(256),
@@ -12,6 +13,15 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req);
+  const limit = rateLimit(`login:${ip}`, 10, 5 * 60 * 1000);
+  if (!limit.allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfterSec) } }
+    );
+  }
+
   const parsed = bodySchema.safeParse(await req.json());
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid email or password" }, { status: 400 });

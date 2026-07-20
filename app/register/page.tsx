@@ -9,6 +9,7 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot, left empty by real users
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +21,7 @@ export default function RegisterPage() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, website }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
@@ -40,6 +41,16 @@ export default function RegisterPage() {
     <main className="mx-auto flex min-h-[60vh] max-w-sm flex-col justify-center px-4 py-16 sm:px-6">
       <h1 className="font-display text-3xl uppercase mb-6">Create Account</h1>
       <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <input
+          type="text"
+          name="website"
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute -left-[9999px] h-0 w-0 opacity-0"
+        />
         <input
           required
           placeholder="Name"
