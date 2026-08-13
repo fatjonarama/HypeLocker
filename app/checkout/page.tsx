@@ -6,6 +6,64 @@ import Link from "next/link";
 import { useCart } from "@/context/cart-context";
 import { formatPrice } from "@/lib/format";
 
+function FlagKosovo() {
+  return (
+    <svg viewBox="0 0 20 14" width="20" height="14" aria-hidden="true">
+      <rect width="20" height="14" fill="#244AA5" />
+      <path d="M8 5.5c1.4-1 2.6-1 4 0 .6.5 1.3.7 2 .4-.7 1.6-2.2 2.6-4 2.6s-3.3-1-4-2.6c.7.3 1.4.1 2-.4z" fill="#E0A82E" />
+      <g fill="#fff">
+        <circle cx="4.4" cy="3" r="0.55" />
+        <circle cx="7" cy="2.2" r="0.55" />
+        <circle cx="10" cy="2" r="0.55" />
+        <circle cx="13" cy="2.2" r="0.55" />
+        <circle cx="15.6" cy="3" r="0.55" />
+        <circle cx="10" cy="4.4" r="0.55" />
+      </g>
+    </svg>
+  );
+}
+
+function FlagAlbania() {
+  return (
+    <svg viewBox="0 0 20 14" width="20" height="14" aria-hidden="true">
+      <rect width="20" height="14" fill="#DE1F2D" />
+      <g fill="#111">
+        <path d="M10 3.6 8.7 5l.4 1.4-1.3-.7-1.2.9.2-1.5-1.3-.8 1.5-.2.5-1.4.7 1.3z" />
+        <path d="M10 3.6l1.3 1.4-.4 1.4 1.3-.7 1.2.9-.2-1.5 1.3-.8-1.5-.2-.5-1.4-.7 1.3z" />
+        <circle cx="10" cy="5.6" r="0.7" />
+        <path d="M10 6.3v3.4M8.6 9.2h2.8M8.9 8.2h2.2" stroke="#111" strokeWidth="0.35" fill="none" />
+      </g>
+    </svg>
+  );
+}
+
+function FlagNorthMacedonia() {
+  return (
+    <svg viewBox="0 0 20 14" width="20" height="14" aria-hidden="true">
+      <rect width="20" height="14" fill="#D20000" />
+      <g fill="#FFE600">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <rect
+            key={i}
+            x="9.4"
+            y="0.5"
+            width="1.2"
+            height="13"
+            transform={`rotate(${i * 22.5} 10 7)`}
+          />
+        ))}
+        <circle cx="10" cy="7" r="2.2" fill="#FFE600" />
+      </g>
+    </svg>
+  );
+}
+
+const PHONE_CODES: { code: string; flag: () => React.JSX.Element; label: string }[] = [
+  { code: "+383", flag: FlagKosovo, label: "Kosovo" },
+  { code: "+355", flag: FlagAlbania, label: "Albania" },
+  { code: "+389", flag: FlagNorthMacedonia, label: "North Macedonia" },
+];
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotalCents } = useCart();
@@ -106,16 +164,28 @@ export default function CheckoutPage() {
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
             Phone Number
             <div className="flex gap-2">
-              <select
-                value={phoneCode}
-                onChange={(e) => setPhoneCode(e.target.value)}
-                aria-label="Country code"
-                className="rounded-md border-2 border-hl-ink bg-hl-bg px-2 py-2 font-body text-sm normal-case text-hl-ink"
-              >
-                <option value="+383">🇽🇰 +383</option>
-                <option value="+355">🇦🇱 +355</option>
-                <option value="+389">🇲🇰 +389</option>
-              </select>
+              <div className="relative">
+                <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 overflow-hidden rounded-[2px]">
+                  {(() => {
+                    const Flag =
+                      PHONE_CODES.find((c) => c.code === phoneCode)?.flag ??
+                      FlagKosovo;
+                    return <Flag />;
+                  })()}
+                </span>
+                <select
+                  value={phoneCode}
+                  onChange={(e) => setPhoneCode(e.target.value)}
+                  aria-label="Country code"
+                  className="rounded-md border-2 border-hl-ink bg-hl-bg py-2 pl-8 pr-2 font-body text-sm normal-case text-hl-ink"
+                >
+                  {PHONE_CODES.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.code}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <input
                 required
                 type="tel"
