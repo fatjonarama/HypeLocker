@@ -10,6 +10,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotalCents } = useCart();
   const [name, setName] = useState("");
+  const [phoneCode, setPhoneCode] = useState("+383");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("kosovo");
@@ -50,7 +51,14 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: { name, phone, address, country, notes, website },
+          customer: {
+            name,
+            phone: `${phoneCode} ${phone}`.trim(),
+            address,
+            country,
+            notes,
+            website,
+          },
           items: items.map((i) => ({
             productId: i.productId,
             size: i.size,
@@ -97,13 +105,26 @@ export default function CheckoutPage() {
           </label>
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
             Phone Number
-            <input
-              required
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="rounded-md border-2 border-hl-ink bg-transparent px-3 py-2 font-body text-sm normal-case text-hl-ink"
-            />
+            <div className="flex gap-2">
+              <select
+                value={phoneCode}
+                onChange={(e) => setPhoneCode(e.target.value)}
+                aria-label="Country code"
+                className="rounded-md border-2 border-hl-ink bg-hl-bg px-2 py-2 font-body text-sm normal-case text-hl-ink"
+              >
+                <option value="+383">🇽🇰 +383</option>
+                <option value="+355">🇦🇱 +355</option>
+                <option value="+389">🇲🇰 +389</option>
+              </select>
+              <input
+                required
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="44 123 456"
+                className="w-full min-w-0 rounded-md border-2 border-hl-ink bg-transparent px-3 py-2 font-body text-sm normal-case text-hl-ink"
+              />
+            </div>
           </label>
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">
             Country
@@ -114,6 +135,7 @@ export default function CheckoutPage() {
             >
               <option value="kosovo">Kosovo</option>
               <option value="albania">Albania</option>
+              <option value="macedonia">North Macedonia</option>
             </select>
           </label>
           <label className="flex flex-col gap-1 font-tag text-xs uppercase text-hl-grey">

@@ -12,7 +12,7 @@ const bodySchema = z.object({
     name: z.string().trim().min(1).max(256),
     phone: z.string().trim().min(1).max(64),
     address: z.string().trim().min(1).max(2000),
-    country: z.enum(["kosovo", "albania"]),
+    country: z.enum(["kosovo", "albania", "macedonia"]),
     notes: z.string().trim().max(2000).optional(),
     website: z.string().max(0).optional(), // honeypot: real users leave this empty
   }),

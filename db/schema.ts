@@ -42,7 +42,7 @@ export const orders = pgTable("orders", {
   customerEmail: varchar("customer_email", { length: 256 }),
   customerPhone: varchar("customer_phone", { length: 64 }).notNull(),
   address: text("address").notNull(),
-  country: varchar("country", { length: 32 }).notNull(), // kosovo | albania
+  country: varchar("country", { length: 32 }).notNull(), // kosovo | albania | macedonia
   notes: text("notes"),
   status: varchar("status", { length: 32 }).notNull().default("pending"), // pending (awaiting delivery + cash) | paid (cash collected) | cancelled
   totalCents: integer("total_cents").notNull().default(0),
